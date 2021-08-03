@@ -1,6 +1,5 @@
-package space.stanton.technicaltask.ui
+package space.stanton.technicaltask.ui.postComments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,12 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import space.stanton.technicaltask.data.models.PostCommentsResponse
 import space.stanton.technicaltask.data.models.PostCommentsUI
-import space.stanton.technicaltask.data.models.PostUI
-import space.stanton.technicaltask.data.models.PostsResponse
 import space.stanton.technicaltask.databinding.ActivityPostCommentsBinding
-import space.stanton.technicaltask.databinding.ActivityPostDetailsBinding
 import space.stanton.technicaltask.databinding.ItemCommentBinding
-import space.stanton.technicaltask.databinding.ItemPostBinding
+import space.stanton.technicaltask.ui.postDetails.PostDetailActivity
 
 
 class PostCommentAdapter(private val items: MutableList<PostCommentsResponse.Comment>) :
@@ -24,7 +20,7 @@ class PostCommentAdapter(private val items: MutableList<PostCommentsResponse.Com
     inner class PostCommentViewHolder(private val itemBinding: ItemCommentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(data: PostCommentsResponse.Comment) {
-            itemBinding.title.text = data.email
+            itemBinding.title.text = data.name
             itemBinding.content.text = data.body
         }
     }
@@ -52,7 +48,7 @@ class PostCommentAdapter(private val items: MutableList<PostCommentsResponse.Com
  */
 @AndroidEntryPoint
 class PostCommentsActivity : AppCompatActivity() {
-    val binding by lazy {
+    private val binding by lazy {
         ActivityPostCommentsBinding.inflate(layoutInflater)
     }
 
@@ -65,7 +61,7 @@ class PostCommentsActivity : AppCompatActivity() {
         setupPostComments(id.toString())
     }
 
-    private fun setupPostComments(postId: String){
+    private fun setupPostComments(postId: String) {
         postCommentsViewModel.postCommentsUI.observe(this, {
             when (it) {
                 is PostCommentsUI.PostCommentsLoading -> {

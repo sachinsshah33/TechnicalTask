@@ -1,4 +1,4 @@
-package space.stanton.technicaltask.ui
+package space.stanton.technicaltask.ui.postList
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

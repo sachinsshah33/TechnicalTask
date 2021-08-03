@@ -1,4 +1,4 @@
-package space.stanton.technicaltask.ui
+package space.stanton.technicaltask.ui.postDetails
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import space.stanton.technicaltask.data.models.PostUI
 import space.stanton.technicaltask.databinding.ActivityPostDetailsBinding
+import space.stanton.technicaltask.ui.postComments.PostCommentsActivity
 
 /**
  * Shows details of a post
@@ -17,7 +18,7 @@ class PostDetailActivity : AppCompatActivity() {
         const val POST_ID_KEY = "POST_ID_KEY"
     }
 
-    val binding by lazy {
+    private val binding by lazy {
         ActivityPostDetailsBinding.inflate(layoutInflater)
     }
 
@@ -30,11 +31,16 @@ class PostDetailActivity : AppCompatActivity() {
         setupPost(id.toString())
 
         binding.comments.setOnClickListener {
-            startActivity(Intent(this@PostDetailActivity, PostCommentsActivity::class.java).putExtra(POST_ID_KEY, id))
+            startActivity(
+                Intent(
+                    this@PostDetailActivity,
+                    PostCommentsActivity::class.java
+                ).putExtra(POST_ID_KEY, id)
+            )
         }
     }
 
-    private fun setupPost(postId: String){
+    private fun setupPost(postId: String) {
         postDetailViewModel.postUI.observe(this, {
             when (it) {
                 is PostUI.PostLoading -> {

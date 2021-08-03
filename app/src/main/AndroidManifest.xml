@@ -15,7 +15,7 @@
         tools:ignore="AllowBackup"
         android:name=".App">
         <activity
-            android:name="space.stanton.technicaltask.ui.PostListActivity"
+            android:name="space.stanton.technicaltask.ui.postList.PostListActivity"
             android:label="All posts"
             android:exported="true">
             <intent-filter>
@@ -24,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="space.stanton.technicaltask.ui.PostDetailActivity" />
-        <activity android:name="space.stanton.technicaltask.ui.PostCommentsActivity" />
+        <activity android:name="space.stanton.technicaltask.ui.postDetails.PostDetailActivity" />
+        <activity android:name="space.stanton.technicaltask.ui.postComments.PostCommentsActivity" />
     </application>
 
 </manifest>
