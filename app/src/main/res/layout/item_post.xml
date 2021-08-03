@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:orientation="vertical"
@@ -10,20 +11,22 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:maxLines="1"
         android:textSize="23dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="title title title title title title title title title"/>
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_marginTop="8dp"
-        android:maxLines="2" />
+        android:maxLines="2"
+        tools:text="content content content content content content content"/>
 
     <View
         android:layout_width="match_parent"

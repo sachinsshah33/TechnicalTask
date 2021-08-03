@@ -39,7 +39,8 @@
         android:layout_margin="16dp"
         app:icon="@drawable/ic_baseline_cloud_download_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/cache_post" />
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -49,6 +50,7 @@
         android:layout_margin="16dp"
         app:icon="@drawable/ic_baseline_comment_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/view_comments" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

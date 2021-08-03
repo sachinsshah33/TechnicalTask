@@ -40,11 +40,10 @@ class PostListActivity : AppCompatActivity() {
                 is PostsUI.PostsSuccess -> {
                     val count = it.items.size
                     binding.tabLayout.getTabAt(1)?.let {
-                        if(count>0){
+                        if (count > 0) {
                             val badge = it.orCreateBadge
                             badge.number = count
-                        }
-                        else{
+                        } else {
                             it.removeBadge()
                         }
                     }
