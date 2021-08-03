@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import space.stanton.technicaltask.data.models.PostsResponse
@@ -18,12 +20,14 @@ class PostListViewModel @Inject constructor(val postRepository: PostRepository) 
 
     fun getPosts() {
         postsUI.value = PostsUI.PostsLoading
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val postsResponse = postRepository.posts()
-            if (postsResponse.isSuccessful && !postsResponse.body().isNullOrEmpty()) {
-                postsUI.value = PostsUI.PostsSuccess(postsResponse.body()!!)
-            } else {
-                postsUI.value = PostsUI.PostsFailure
+            viewModelScope.launch {
+                if (postsResponse.isSuccessful && !postsResponse.body().isNullOrEmpty()) {
+                    postsUI.value = PostsUI.PostsSuccess(postsResponse.body()!!)
+                } else {
+                    postsUI.value = PostsUI.PostsFailure
+                }
             }
         }
     }
@@ -32,13 +36,15 @@ class PostListViewModel @Inject constructor(val postRepository: PostRepository) 
 
     fun getCachedPosts() {
         cachedPostsUI.value = PostsUI.PostsLoading
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             postRepository.observeCachedPosts().collectLatest {
-                if(it.isNotEmpty()){
-                    cachedPostsUI.value = PostsUI.PostsSuccess(it.toMutableList())
-                }
-                else{
-                    cachedPostsUI.value = PostsUI.PostsFailure
+                viewModelScope.launch {
+                    if(it.isNotEmpty()){
+                        cachedPostsUI.value = PostsUI.PostsSuccess(it.toMutableList())
+                    }
+                    else{
+                        cachedPostsUI.value = PostsUI.PostsFailure
+                    }
                 }
             }
         }

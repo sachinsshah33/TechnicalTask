@@ -29,7 +29,7 @@ class PostDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val id = intent.getIntExtra(POST_ID_KEY, -1)
-        setupPost(id.toString())
+        setupCachePost(id.toString())
 
         binding.cache.setOnClickListener {
             post?.let {
@@ -56,12 +56,7 @@ class PostDetailActivity : AppCompatActivity() {
                     // TODO - show loading UI
                 }
                 is PostUI.PostSuccess -> {
-                    post = it.item
-                    post?.title.let {
-                        binding.title.text = it
-                        this@PostDetailActivity.title = it
-                    }
-                    binding.content.text = post?.body
+                    setPostUI(it.item)
                 }
                 is PostUI.PostFailure -> {
                     // TODO - handle error
@@ -70,5 +65,33 @@ class PostDetailActivity : AppCompatActivity() {
         })
 
         postDetailViewModel.getPostById(postId)
+    }
+
+    private fun setupCachePost(postId: String) {
+        postDetailViewModel.cachedPostUI.observe(this, {
+            when (it) {
+                is PostUI.PostLoading -> {
+                    // TODO - show loading UI
+                }
+                is PostUI.PostSuccess -> {
+                    binding.cache.isEnabled = false
+                    setPostUI(it.item)
+                }
+                is PostUI.PostFailure -> {
+                    setupPost(postId) //get from live if not in cache, or maybe pass in parcelable post model to this activity?
+                }
+            }
+        })
+
+        postDetailViewModel.observeCachedPostById(postId)
+    }
+
+    private fun setPostUI(post: PostsResponse.Post){
+        this.post = post
+        post.title.let {
+            binding.title.text = it
+            this@PostDetailActivity.title = it
+        }
+        binding.content.text = post.body
     }
 }

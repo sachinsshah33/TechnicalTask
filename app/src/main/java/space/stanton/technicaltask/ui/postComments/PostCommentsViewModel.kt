@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import space.stanton.technicaltask.data.models.PostCommentsUI
 import space.stanton.technicaltask.data.network.ApiService
@@ -16,13 +18,14 @@ class PostCommentsViewModel @Inject constructor(val postRepository: PostReposito
 
     fun getPostCommentsById(postId: String) {
         postCommentsUI.value = PostCommentsUI.PostCommentsLoading
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val postCommentsResponse = postRepository.getPostCommentsById(postId)
-            if (postCommentsResponse.isSuccessful && !postCommentsResponse.body().isNullOrEmpty()) {
-                postCommentsUI.value =
-                    PostCommentsUI.PostCommentsSuccess(postCommentsResponse.body()!!)
-            } else {
-                postCommentsUI.value = PostCommentsUI.PostCommentsFailure
+            viewModelScope.launch {
+                if (postCommentsResponse.isSuccessful && !postCommentsResponse.body().isNullOrEmpty()) {
+                    postCommentsUI.value = PostCommentsUI.PostCommentsSuccess(postCommentsResponse.body()!!)
+                } else {
+                    postCommentsUI.value = PostCommentsUI.PostCommentsFailure
+                }
             }
         }
     }

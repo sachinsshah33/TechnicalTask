@@ -40,7 +40,9 @@ class PostListOfflineFragment : Fragment() {
                 Intent(
                     requireActivity(),
                     PostDetailActivity::class.java
-                ).apply { putExtra(PostDetailActivity.POST_ID_KEY, id) }
+                ).apply {
+                    putExtra(PostDetailActivity.POST_ID_KEY, it)
+                }
             )
         }
     }
