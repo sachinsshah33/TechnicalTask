@@ -14,7 +14,7 @@
         android:theme="@style/Theme.TechnicalTest"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".PostListActivity"
+            android:name="space.stanton.technicaltask.PostListActivity"
             android:label="All posts"
             android:exported="true"
             >
@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PostDetailActivity" />
+        <activity android:name="space.stanton.technicaltask.PostDetailActivity" />
     </application>
 
 </manifest>

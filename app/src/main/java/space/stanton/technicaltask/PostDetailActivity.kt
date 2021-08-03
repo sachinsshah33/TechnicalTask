@@ -1,9 +1,10 @@
-package space.stanton.technicaltest
+package space.stanton.technicaltask
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import org.json.JSONObject
+import space.stanton.technicaltest.R
 
 /**
  * Shows details of a post

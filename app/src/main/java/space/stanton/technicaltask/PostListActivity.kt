@@ -1,4 +1,4 @@
-package space.stanton.technicaltest
+package space.stanton.technicaltask
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 import org.json.JSONObject
+import space.stanton.technicaltest.R
 
 class PostAdapter(val items: MutableList<JSONObject>, val onItemClick: (String) -> Unit) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {

@@ -1,4 +1,4 @@
-package space.stanton.technicaltest
+package space.stanton.technicaltask
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
