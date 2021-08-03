@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import space.stanton.technicaltask.data.models.PostUI
+import space.stanton.technicaltask.data.models.PostsResponse
 import space.stanton.technicaltask.databinding.ActivityPostDetailsBinding
 import space.stanton.technicaltask.ui.postComments.PostCommentsActivity
 
@@ -30,6 +31,12 @@ class PostDetailActivity : AppCompatActivity() {
         val id = intent.getIntExtra(POST_ID_KEY, -1)
         setupPost(id.toString())
 
+        binding.cache.setOnClickListener {
+            post?.let {
+                postDetailViewModel.cachePost(it)
+            }
+        }
+
         binding.comments.setOnClickListener {
             startActivity(
                 Intent(
@@ -40,6 +47,8 @@ class PostDetailActivity : AppCompatActivity() {
         }
     }
 
+    private var post: PostsResponse.Post? = null
+
     private fun setupPost(postId: String) {
         postDetailViewModel.postUI.observe(this, {
             when (it) {
@@ -47,11 +56,12 @@ class PostDetailActivity : AppCompatActivity() {
                     // TODO - show loading UI
                 }
                 is PostUI.PostSuccess -> {
-                    it.item.title.let {
+                    post = it.item
+                    post?.title.let {
                         binding.title.text = it
                         this@PostDetailActivity.title = it
                     }
-                    binding.content.text = it.item.body
+                    binding.content.text = post?.body
                 }
                 is PostUI.PostFailure -> {
                     // TODO - handle error

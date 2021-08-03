@@ -23,7 +23,7 @@ object NetworkModule {
     @Provides
     fun apiService(
         apiEndpoints: ApiEndpoints
-    ): ApiService = ApiService(apiEndpoints)
+    ) = ApiService(apiEndpoints)
 
     @Singleton
     @Provides
@@ -36,7 +36,7 @@ object NetworkModule {
     @Provides
     fun retrofit(
         okHttpClient: OkHttpClient
-    ): Retrofit =
+    ) =
         Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com/")
             .client(okHttpClient)
@@ -45,7 +45,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun okhttpClient(): OkHttpClient = OkHttpClient.Builder()
+    fun okhttpClient() = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)

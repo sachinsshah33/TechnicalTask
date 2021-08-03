@@ -15,40 +15,6 @@ import space.stanton.technicaltask.databinding.ActivityPostListBinding
 import space.stanton.technicaltask.databinding.ItemPostBinding
 import space.stanton.technicaltask.ui.postDetails.PostDetailActivity
 
-class PostAdapter(
-    private val items: MutableList<PostsResponse.Post>,
-    val onItemClick: (Int) -> Unit
-) :
-    RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
-
-    inner class PostViewHolder(private val itemBinding: ItemPostBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(data: PostsResponse.Post) {
-            itemBinding.title.text = data.title
-            itemBinding.content.text = data.body
-            itemBinding.root.setOnClickListener {
-                onItemClick(data.id)
-            }
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        return PostViewHolder(
-            ItemPostBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
-
-    override fun getItemCount(): Int = items.size
-
-}
 
 /**
  * Displays a list of posts

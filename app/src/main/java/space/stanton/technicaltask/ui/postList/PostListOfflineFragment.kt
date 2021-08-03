@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,11 +30,36 @@ class PostListOfflineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.postsList?.adapter = postAdapter
         setupPosts()
     }
 
+    private val postAdapter by lazy {
+        PostAdapter{
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    PostDetailActivity::class.java
+                ).apply { putExtra(PostDetailActivity.POST_ID_KEY, id) }
+            )
+        }
+    }
 
     private fun setupPosts() {
+        postListViewModel.cachedPostsUI.observe(requireActivity(), {
+            when (it) {
+                is PostsUI.PostsLoading -> {
+                    // TODO - show loading UI
+                }
+                is PostsUI.PostsSuccess -> {
+                    postAdapter.submitList(it.items)
+                }
+                is PostsUI.PostsFailure -> {
+                    // TODO - handle error
+                }
+            }
+        })
 
+        postListViewModel.getCachedPosts()
     }
 }

@@ -1,8 +1,15 @@
 package space.stanton.technicaltask.data.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 class PostsResponse : ArrayList<PostsResponse.Post>() {
+
+    @Entity(tableName = "posts")
     data class Post(
         val body: String,
+
+        @PrimaryKey
         val id: Int,
         val title: String,
         val userId: Int

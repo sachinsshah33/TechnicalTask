@@ -30,9 +30,22 @@ class PostListLiveFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding?.postsList?.adapter = postAdapter
         setupPosts()
     }
 
+    private val postAdapter by lazy {
+        PostAdapter{
+            startActivity(
+                Intent(
+                    requireActivity(),
+                    PostDetailActivity::class.java
+                ).apply {
+                    putExtra(PostDetailActivity.POST_ID_KEY, it)
+                }
+            )
+        }
+    }
 
     private fun setupPosts() {
         postListViewModel.postsUI.observe(requireActivity(), {
@@ -41,15 +54,7 @@ class PostListLiveFragment : Fragment() {
                     // TODO - show loading UI
                 }
                 is PostsUI.PostsSuccess -> {
-                    binding?.postsList?.adapter =
-                        PostAdapter(it.items) { id ->
-                            startActivity(
-                                Intent(
-                                    requireActivity(),
-                                    PostDetailActivity::class.java
-                                ).putExtra(PostDetailActivity.POST_ID_KEY, id)
-                            )
-                        }
+                    postAdapter.submitList(it.items)
                 }
                 is PostsUI.PostsFailure -> {
                     // TODO - handle error
