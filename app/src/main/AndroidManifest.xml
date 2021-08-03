@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name="space.stanton.technicaltask.ui.PostDetailActivity" />
+        <activity android:name="space.stanton.technicaltask.ui.PostCommentsActivity" />
     </application>
 
 </manifest>

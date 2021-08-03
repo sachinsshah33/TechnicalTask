@@ -4,6 +4,7 @@ package space.stanton.technicaltask.data.network
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import space.stanton.technicaltask.data.models.PostCommentsResponse
 import space.stanton.technicaltask.data.models.PostsResponse
 
 interface ApiEndpoints {
@@ -12,4 +13,7 @@ interface ApiEndpoints {
 
     @GET("posts/{POST_ID}")
     suspend fun getPostById(@Path("POST_ID") postId: String): Response<PostsResponse.Post>
+
+    @GET("posts/{POST_ID}/comments")
+    suspend fun getPostCommentsById(@Path("POST_ID") postId: String): Response<PostCommentsResponse>
 }

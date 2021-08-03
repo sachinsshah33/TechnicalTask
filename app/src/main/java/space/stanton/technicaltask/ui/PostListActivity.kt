@@ -13,7 +13,7 @@ import space.stanton.technicaltask.data.models.PostsUI
 import space.stanton.technicaltask.databinding.ActivityPostListBinding
 import space.stanton.technicaltask.databinding.ItemPostBinding
 
-class PostAdapter(val items: MutableList<PostsResponse.Post>, val onItemClick: (Int) -> Unit) :
+class PostAdapter(private val items: MutableList<PostsResponse.Post>, val onItemClick: (Int) -> Unit) :
     RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
     inner class PostViewHolder(private val itemBinding: ItemPostBinding) :
@@ -59,8 +59,10 @@ class PostListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupPosts()
+    }
 
-
+    private fun setupPosts(){
         postListViewModel.postsUI.observe(this, {
             when (it) {
                 is PostsUI.PostsLoading -> {

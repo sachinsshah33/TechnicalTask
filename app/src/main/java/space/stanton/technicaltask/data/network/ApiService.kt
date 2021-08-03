@@ -7,6 +7,8 @@ class ApiService(private val apiEndpoints: ApiEndpoints) {
     suspend fun posts(): Response<PostsResponse> = apiEndpoints.posts()
 
     suspend fun getPostById(postId: String) = apiEndpoints.getPostById(postId)
+
+    suspend fun getPostCommentsById(postId: String) = apiEndpoints.getPostCommentsById(postId)
 }
 
 

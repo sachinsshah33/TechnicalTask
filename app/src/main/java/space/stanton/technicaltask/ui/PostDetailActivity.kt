@@ -1,5 +1,6 @@
 package space.stanton.technicaltask.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -22,12 +23,18 @@ class PostDetailActivity : AppCompatActivity() {
 
     private val postDetailViewModel: PostDetailViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val id = intent.getIntExtra(POST_ID_KEY, -1)
+        setupPost(id.toString())
 
+        binding.comments.setOnClickListener {
+            startActivity(Intent(this@PostDetailActivity, PostCommentsActivity::class.java).putExtra(POST_ID_KEY, id))
+        }
+    }
+
+    private fun setupPost(postId: String){
         postDetailViewModel.postUI.observe(this, {
             when (it) {
                 is PostUI.PostLoading -> {
@@ -46,6 +53,6 @@ class PostDetailActivity : AppCompatActivity() {
             }
         })
 
-        postDetailViewModel.getPostById(id.toString())
+        postDetailViewModel.getPostById(postId)
     }
 }

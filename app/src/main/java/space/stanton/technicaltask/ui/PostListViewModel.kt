@@ -17,7 +17,7 @@ class PostListViewModel @Inject constructor(val apiService: ApiService) : ViewMo
         postsUI.value = PostsUI.PostsLoading
         viewModelScope.launch {
             val postsResponse = apiService.posts()
-            if (postsResponse.isSuccessful && postsResponse.body() != null) {
+            if (postsResponse.isSuccessful && !postsResponse.body().isNullOrEmpty()) {
                 postsUI.value = PostsUI.PostsSuccess(postsResponse.body()!!)
             } else {
                 postsUI.value = PostsUI.PostsFailure
