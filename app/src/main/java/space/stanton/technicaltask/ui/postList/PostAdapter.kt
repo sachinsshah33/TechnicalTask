@@ -10,8 +10,9 @@ import space.stanton.technicaltask.data.models.PostsResponse
 import space.stanton.technicaltask.databinding.ItemPostBinding
 
 
-class PostAdapter(val onItemClick: (Int) -> Unit) : ListAdapter<PostsResponse.Post, PostAdapter.PostViewHolder>(PostDiffUtil()) {
-    companion object{
+class PostAdapter(val onItemClick: (Int) -> Unit) :
+    ListAdapter<PostsResponse.Post, PostAdapter.PostViewHolder>(PostDiffUtil()) {
+    companion object {
         class PostDiffUtil : DiffUtil.ItemCallback<PostsResponse.Post>() {
             override fun areItemsTheSame(
                 oldItem: PostsResponse.Post,

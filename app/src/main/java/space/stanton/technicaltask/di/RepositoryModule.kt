@@ -15,5 +15,6 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Singleton
     @Provides
-    fun providePostRepository(apiService: ApiService, dao: PostDAO) = PostRepository(apiService, dao)
+    fun providePostRepository(apiService: ApiService, dao: PostDAO) =
+        PostRepository(apiService, dao)
 }

@@ -35,7 +35,7 @@ class PostListOfflineFragment : Fragment() {
     }
 
     private val postAdapter by lazy {
-        PostAdapter{
+        PostAdapter {
             startActivity(
                 Intent(
                     requireActivity(),

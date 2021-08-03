@@ -86,7 +86,7 @@ class PostDetailActivity : AppCompatActivity() {
         postDetailViewModel.observeCachedPostById(postId)
     }
 
-    private fun setPostUI(post: PostsResponse.Post){
+    private fun setPostUI(post: PostsResponse.Post) {
         this.post = post
         post.title.let {
             binding.title.text = it

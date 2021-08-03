@@ -8,7 +8,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import space.stanton.technicaltask.data.models.PostCommentsUI
-import space.stanton.technicaltask.data.network.ApiService
 import space.stanton.technicaltask.data.repositories.PostRepository
 import javax.inject.Inject
 
@@ -21,8 +20,11 @@ class PostCommentsViewModel @Inject constructor(val postRepository: PostReposito
         CoroutineScope(Dispatchers.IO).launch {
             val postCommentsResponse = postRepository.getPostCommentsById(postId)
             viewModelScope.launch {
-                if (postCommentsResponse.isSuccessful && !postCommentsResponse.body().isNullOrEmpty()) {
-                    postCommentsUI.value = PostCommentsUI.PostCommentsSuccess(postCommentsResponse.body()!!)
+                if (postCommentsResponse?.isSuccessful == true && !postCommentsResponse.body()
+                        .isNullOrEmpty()
+                ) {
+                    postCommentsUI.value =
+                        PostCommentsUI.PostCommentsSuccess(postCommentsResponse.body()!!)
                 } else {
                     postCommentsUI.value = PostCommentsUI.PostCommentsFailure
                 }

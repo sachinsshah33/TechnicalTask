@@ -8,9 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import space.stanton.technicaltask.data.models.PostsResponse
 import space.stanton.technicaltask.data.models.PostsUI
-import space.stanton.technicaltask.data.network.ApiService
 import space.stanton.technicaltask.data.repositories.PostRepository
 import javax.inject.Inject
 
@@ -23,7 +21,7 @@ class PostListViewModel @Inject constructor(val postRepository: PostRepository) 
         CoroutineScope(Dispatchers.IO).launch {
             val postsResponse = postRepository.posts()
             viewModelScope.launch {
-                if (postsResponse.isSuccessful && !postsResponse.body().isNullOrEmpty()) {
+                if (postsResponse?.isSuccessful == true && !postsResponse.body().isNullOrEmpty()) {
                     postsUI.value = PostsUI.PostsSuccess(postsResponse.body()!!)
                 } else {
                     postsUI.value = PostsUI.PostsFailure
@@ -39,10 +37,9 @@ class PostListViewModel @Inject constructor(val postRepository: PostRepository) 
         CoroutineScope(Dispatchers.IO).launch {
             postRepository.observeCachedPosts().collectLatest {
                 viewModelScope.launch {
-                    if(it.isNotEmpty()){
+                    if (it.isNotEmpty()) {
                         cachedPostsUI.value = PostsUI.PostsSuccess(it.toMutableList())
-                    }
-                    else{
+                    } else {
                         cachedPostsUI.value = PostsUI.PostsFailure
                     }
                 }

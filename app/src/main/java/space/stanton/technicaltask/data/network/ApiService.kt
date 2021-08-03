@@ -1,14 +1,15 @@
 package space.stanton.technicaltask.data.network
 
-import retrofit2.Response
-import space.stanton.technicaltask.data.models.PostsResponse
+import space.stanton.technicaltask.App
 
 class ApiService(private val apiEndpoints: ApiEndpoints) {
-    suspend fun posts(): Response<PostsResponse> = apiEndpoints.posts()
+    suspend fun posts() = if (App.isNetworkAvailable()) apiEndpoints.posts() else null
 
-    suspend fun getPostById(postId: String) = apiEndpoints.getPostById(postId)
+    suspend fun getPostById(postId: String) =
+        if (App.isNetworkAvailable()) apiEndpoints.getPostById(postId) else null
 
-    suspend fun getPostCommentsById(postId: String) = apiEndpoints.getPostCommentsById(postId)
+    suspend fun getPostCommentsById(postId: String) =
+        if (App.isNetworkAvailable()) apiEndpoints.getPostCommentsById(postId) else null
 }
 
 

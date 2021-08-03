@@ -1,13 +1,16 @@
 package space.stanton.technicaltask.data.local
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import space.stanton.technicaltask.data.models.PostsResponse
 
 @Dao
 interface PostDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    /*suspend */fun cachePost(post: PostsResponse.Post): Long?
+            /*suspend */fun cachePost(post: PostsResponse.Post): Long?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun cachePosts(posts: List<PostsResponse.Post>): LongArray?
