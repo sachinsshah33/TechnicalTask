@@ -3,11 +3,8 @@ package space.stanton.technicaltask.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
-import org.json.JSONObject
-import space.stanton.technicaltask.data.network.ApiCalls
+import space.stanton.technicaltask.data.models.PostUI
 import space.stanton.technicaltask.databinding.ActivityPostDetailsBinding
 
 /**
@@ -31,18 +28,24 @@ class PostDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         val id = intent.getIntExtra(POST_ID_KEY, -1)
 
-        lifecycleScope.launch {
-            val postResponse = postDetailViewModel.getPostById(id.toString())
-            if(postResponse.isSuccessful && postResponse.body() != null){
-                postResponse.body()!!.title.let {
-                    binding.title.text = it
-                    this@PostDetailActivity.title = it
+        postDetailViewModel.postUI.observe(this, {
+            when (it) {
+                is PostUI.PostLoading -> {
+                    // TODO - show loading UI
                 }
-                binding.content.text = postResponse.body()!!.body
+                is PostUI.PostSuccess -> {
+                    it.item.title.let {
+                        binding.title.text = it
+                        this@PostDetailActivity.title = it
+                    }
+                    binding.content.text = it.item.body
+                }
+                is PostUI.PostFailure -> {
+                    // TODO - handle error
+                }
             }
-            else{
-                // TODO - handle error
-            }
-        }
+        })
+
+        postDetailViewModel.getPostById(id.toString())
     }
 }

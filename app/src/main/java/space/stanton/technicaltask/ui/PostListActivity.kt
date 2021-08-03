@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import space.stanton.technicaltask.data.models.PostsResponse
+import space.stanton.technicaltask.data.models.PostsUI
 import space.stanton.technicaltask.databinding.ActivityPostListBinding
 import space.stanton.technicaltask.databinding.ItemPostBinding
 
@@ -61,23 +60,30 @@ class PostListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        lifecycleScope.launch {
-            val postsResponse = postListViewModel.posts()
-            if(postsResponse.isSuccessful && postsResponse.body() != null){
-                binding.postsList.adapter =
-                    PostAdapter(postsResponse.body()!!) { id ->
-                        startActivity(
-                            Intent(
-                                this@PostListActivity,
-                                PostDetailActivity::class.java
-                            ).putExtra(PostDetailActivity.POST_ID_KEY, id)
-                        )
-                    }
+
+        postListViewModel.postsUI.observe(this, {
+            when (it) {
+                is PostsUI.PostsLoading -> {
+                    // TODO - show loading UI
+                }
+                is PostsUI.PostsSuccess -> {
+                    binding.postsList.adapter =
+                        PostAdapter(it.items) { id ->
+                            startActivity(
+                                Intent(
+                                    this@PostListActivity,
+                                    PostDetailActivity::class.java
+                                ).putExtra(PostDetailActivity.POST_ID_KEY, id)
+                            )
+                        }
+                }
+                is PostsUI.PostsFailure -> {
+                    // TODO - handle error
+                }
             }
-            else{
-                // TODO - handle error
-            }
-        }
+        })
+
+        postListViewModel.getPosts()
     }
 }
 

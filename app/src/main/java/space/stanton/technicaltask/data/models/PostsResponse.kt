@@ -8,3 +8,16 @@ class PostsResponse : ArrayList<PostsResponse.Post>() {
         val userId: Int
     )
 }
+
+
+sealed class PostsUI {
+    object PostsLoading : PostsUI()
+    class PostsSuccess(val items: MutableList<PostsResponse.Post>) : PostsUI()
+    object PostsFailure : PostsUI()
+}
+
+sealed class PostUI {
+    object PostLoading : PostUI()
+    class PostSuccess(val item: PostsResponse.Post) : PostUI()
+    object PostFailure : PostUI()
+}
