@@ -1,8 +1,11 @@
 package space.stanton.technicaltask.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import space.stanton.technicaltask.data.network.ApiCalls
 import space.stanton.technicaltask.databinding.ActivityPostDetailsBinding
@@ -20,27 +23,26 @@ class PostDetailActivity : AppCompatActivity() {
         ActivityPostDetailsBinding.inflate(layoutInflater)
     }
 
+    private val postDetailViewModel: PostDetailViewModel by viewModels()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val id = intent.getIntExtra(POST_ID_KEY, -1)
 
-        Thread {
-            ApiCalls.getPostById(id!!.toString()) {
-                if (it.second != null) {
-                    // TODO - handle error
-                } else {
-                    val post = JSONObject(it.first!!.string())
-                    runOnUiThread {
-                        post.getString("title").let {
-                            binding.title.text = it
-                            this@PostDetailActivity.title = it
-                        }
-                        binding.content.text = post.getString("body")
-                    }
+        lifecycleScope.launch {
+            val postResponse = postDetailViewModel.getPostById(id.toString())
+            if(postResponse.isSuccessful && postResponse.body() != null){
+                postResponse.body()!!.title.let {
+                    binding.title.text = it
+                    this@PostDetailActivity.title = it
                 }
+                binding.content.text = postResponse.body()!!.body
             }
-
-        }.start()
+            else{
+                // TODO - handle error
+            }
+        }
     }
 }

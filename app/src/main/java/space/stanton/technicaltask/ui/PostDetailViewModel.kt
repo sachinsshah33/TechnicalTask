@@ -8,6 +8,6 @@ import space.stanton.technicaltask.data.network.ApiService
 import javax.inject.Inject
 
 @HiltViewModel
-class PostListViewModel @Inject constructor(val apiService: ApiService) : ViewModel() {
-    suspend fun posts(): Response<PostsResponse> = apiService.posts()
+class PostDetailViewModel @Inject constructor(val apiService: ApiService) : ViewModel() {
+    suspend fun getPostById(postId: String) = apiService.getPostById(postId)
 }

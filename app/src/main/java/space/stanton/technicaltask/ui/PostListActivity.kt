@@ -62,46 +62,22 @@ class PostListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         lifecycleScope.launch {
-            val posts = postListViewModel.posts()
-            if (posts.isSuccessful) {
-                posts.body()?.let {
-                    binding.postsList.adapter =
-                        PostAdapter(it) { id ->
-                            startActivity(
-                                Intent(
-                                    this@PostListActivity,
-                                    PostDetailActivity::class.java
-                                ).putExtra(PostDetailActivity.POST_ID_KEY, id)
-                            )
-                        }
-                }
+            val postsResponse = postListViewModel.posts()
+            if(postsResponse.isSuccessful && postsResponse.body() != null){
+                binding.postsList.adapter =
+                    PostAdapter(postsResponse.body()!!) { id ->
+                        startActivity(
+                            Intent(
+                                this@PostListActivity,
+                                PostDetailActivity::class.java
+                            ).putExtra(PostDetailActivity.POST_ID_KEY, id)
+                        )
+                    }
+            }
+            else{
+                // TODO - handle error
             }
         }
-
-
-        /*Thread {
-            ApiCalls.loadAll {
-                if (it.second != null) {
-                    //TODO - handle error
-                } else {
-                    var json = JSONArray(it.first!!.string())
-                    runOnUiThread {
-                        var listOfPosts = mutableListOf<JSONObject>()
-                        for (i in 0 until json.length()) {
-                            listOfPosts.add(i, json.getJSONObject(i))
-                        }
-                        binding.postsList.adapter =
-                            PostAdapter(listOfPosts) { id ->
-                                startActivity(
-                                    Intent(this, PostDetailActivity::class.java)
-                                        .putExtra(PostDetailActivity.POST_ID_KEY, id)
-                                )
-                            }
-                    }
-                }
-            }
-        }.start()
-*/
     }
 }
 
