@@ -1,4 +1,4 @@
-package space.stanton.technicaltask
+package space.stanton.technicaltask.data.network
 
 import okhttp3.OkHttpClient
 import okhttp3.Request

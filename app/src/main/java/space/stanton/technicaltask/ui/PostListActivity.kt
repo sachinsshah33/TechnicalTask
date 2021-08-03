@@ -1,26 +1,29 @@
-package space.stanton.technicaltask
+package space.stanton.technicaltask.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import org.json.JSONArray
-import org.json.JSONObject
-import space.stanton.technicaltest.R
-import space.stanton.technicaltest.databinding.ActivityPostListBinding
-import space.stanton.technicaltest.databinding.ItemPostBinding
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import space.stanton.technicaltask.data.models.PostsResponse
+import space.stanton.technicaltask.databinding.ActivityPostListBinding
+import space.stanton.technicaltask.databinding.ItemPostBinding
 
-class PostAdapter(val items: MutableList<JSONObject>, val onItemClick: (String) -> Unit) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter(val items: MutableList<PostsResponse.Post>, val onItemClick: (Int) -> Unit) :
+    RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
-    inner class PostViewHolder(private val itemBinding: ItemPostBinding) : RecyclerView.ViewHolder(itemBinding.root){
-        fun bind(data: JSONObject) {
-            itemBinding.title.text = data.getString("title")
-            itemBinding.content.text = data.getString("body")
+    inner class PostViewHolder(private val itemBinding: ItemPostBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+        fun bind(data: PostsResponse.Post) {
+            itemBinding.title.text = data.title
+            itemBinding.content.text = data.body
             itemBinding.root.setOnClickListener {
-                onItemClick(data.getString("id"))
+                onItemClick(data.id)
             }
         }
     }
@@ -46,16 +49,37 @@ class PostAdapter(val items: MutableList<JSONObject>, val onItemClick: (String) 
 /**
  * Displays a list of posts
  */
+@AndroidEntryPoint
 class PostListActivity : AppCompatActivity() {
     val binding by lazy {
         ActivityPostListBinding.inflate(layoutInflater)
     }
 
+    private val postListViewModel: PostListViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        Thread {
+        lifecycleScope.launch {
+            val posts = postListViewModel.posts()
+            if (posts.isSuccessful) {
+                posts.body()?.let {
+                    binding.postsList.adapter =
+                        PostAdapter(it) { id ->
+                            startActivity(
+                                Intent(
+                                    this@PostListActivity,
+                                    PostDetailActivity::class.java
+                                ).putExtra(PostDetailActivity.POST_ID_KEY, id)
+                            )
+                        }
+                }
+            }
+        }
+
+
+        /*Thread {
             ApiCalls.loadAll {
                 if (it.second != null) {
                     //TODO - handle error
@@ -67,17 +91,17 @@ class PostListActivity : AppCompatActivity() {
                             listOfPosts.add(i, json.getJSONObject(i))
                         }
                         binding.postsList.adapter =
-                            PostAdapter(listOfPosts, onItemClick = { id ->
+                            PostAdapter(listOfPosts) { id ->
                                 startActivity(
                                     Intent(this, PostDetailActivity::class.java)
                                         .putExtra(PostDetailActivity.POST_ID_KEY, id)
                                 )
-                            })
+                            }
                     }
                 }
             }
         }.start()
-
+*/
     }
 }
 

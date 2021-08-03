@@ -1,16 +1,16 @@
-package space.stanton.technicaltask
+package space.stanton.technicaltask.ui
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.json.JSONObject
-import space.stanton.technicaltest.R
-import space.stanton.technicaltest.databinding.ActivityPostDetailsBinding
-import space.stanton.technicaltest.databinding.ActivityPostListBinding
+import space.stanton.technicaltask.data.network.ApiCalls
+import space.stanton.technicaltask.databinding.ActivityPostDetailsBinding
 
 /**
  * Shows details of a post
  */
+@AndroidEntryPoint
 class PostDetailActivity : AppCompatActivity() {
     companion object {
         const val POST_ID_KEY = "POST_ID_KEY"
@@ -23,10 +23,10 @@ class PostDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        val id = intent.getStringExtra(POST_ID_KEY)
+        val id = intent.getIntExtra(POST_ID_KEY, -1)
 
         Thread {
-            ApiCalls.getPostById(id!!) {
+            ApiCalls.getPostById(id!!.toString()) {
                 if (it.second != null) {
                     // TODO - handle error
                 } else {
