@@ -7,6 +7,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import space.stanton.technicaltask.data.models.PostsUI
 import space.stanton.technicaltask.databinding.ActivityPostListBinding
+import space.stanton.technicaltask.ui.postList.fragments.PostListTabsPagerAdapter
 
 
 /**
