@@ -1,4 +1,4 @@
-package space.stanton.technicaltask.ui.postList
+package space.stanton.technicaltask.ui.postList.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import space.stanton.technicaltask.data.models.PostsResponse
 import space.stanton.technicaltask.databinding.ItemPostBinding
 
 
-class PostAdapter(val onItemClick: (Int) -> Unit) :
+class PostAdapter(val onItemClick: PostSelectedListener? = null) :
     ListAdapter<PostsResponse.Post, PostAdapter.PostViewHolder>(PostDiffUtil()) {
     companion object {
         class PostDiffUtil : DiffUtil.ItemCallback<PostsResponse.Post>() {
@@ -31,11 +31,8 @@ class PostAdapter(val onItemClick: (Int) -> Unit) :
     inner class PostViewHolder(private val itemBinding: ItemPostBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(data: PostsResponse.Post) {
-            itemBinding.title.text = data.title
-            itemBinding.content.text = data.body
-            itemBinding.root.setOnClickListener {
-                onItemClick(data.id)
-            }
+            itemBinding.model = data
+            itemBinding.clickListener = onItemClick
         }
     }
 
@@ -54,4 +51,8 @@ class PostAdapter(val onItemClick: (Int) -> Unit) :
     }
 
     override fun getItemCount(): Int = currentList.size
+}
+
+interface PostSelectedListener {
+    fun postClicked(postId: Int)
 }

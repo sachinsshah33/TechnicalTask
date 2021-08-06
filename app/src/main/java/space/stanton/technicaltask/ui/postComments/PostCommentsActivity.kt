@@ -1,47 +1,14 @@
 package space.stanton.technicaltask.ui.postComments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import space.stanton.technicaltask.data.models.PostCommentsResponse
 import space.stanton.technicaltask.data.models.PostCommentsUI
 import space.stanton.technicaltask.databinding.ActivityPostCommentsBinding
-import space.stanton.technicaltask.databinding.ItemCommentBinding
+import space.stanton.technicaltask.ui.postComments.adapter.PostCommentAdapter
 import space.stanton.technicaltask.ui.postDetails.PostDetailActivity
 
-
-class PostCommentAdapter(private val items: MutableList<PostCommentsResponse.Comment>) :
-    RecyclerView.Adapter<PostCommentAdapter.PostCommentViewHolder>() {
-
-    inner class PostCommentViewHolder(private val itemBinding: ItemCommentBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(data: PostCommentsResponse.Comment) {
-            itemBinding.title.text = data.name
-            itemBinding.content.text = data.body
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostCommentViewHolder {
-        return PostCommentViewHolder(
-            ItemCommentBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
-    }
-
-    override fun onBindViewHolder(holder: PostCommentViewHolder, position: Int) {
-        holder.bind(items[position])
-    }
-
-    override fun getItemCount(): Int = items.size
-
-}
 
 /**
  * Shows details of a post

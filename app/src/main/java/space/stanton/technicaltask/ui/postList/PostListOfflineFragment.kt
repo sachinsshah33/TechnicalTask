@@ -11,6 +11,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import space.stanton.technicaltask.data.models.PostsUI
 import space.stanton.technicaltask.databinding.FragmentPostListBinding
 import space.stanton.technicaltask.ui.postDetails.PostDetailActivity
+import space.stanton.technicaltask.ui.postList.adapter.PostAdapter
+import space.stanton.technicaltask.ui.postList.adapter.PostSelectedListener
 
 @AndroidEntryPoint
 class PostListOfflineFragment : Fragment() {
@@ -35,16 +37,18 @@ class PostListOfflineFragment : Fragment() {
     }
 
     private val postAdapter by lazy {
-        PostAdapter {
-            startActivity(
-                Intent(
-                    requireActivity(),
-                    PostDetailActivity::class.java
-                ).apply {
-                    putExtra(PostDetailActivity.POST_ID_KEY, it)
-                }
-            )
-        }
+        PostAdapter(object : PostSelectedListener {
+            override fun postClicked(postId: Int) {
+                startActivity(
+                    Intent(
+                        requireActivity(),
+                        PostDetailActivity::class.java
+                    ).apply {
+                        putExtra(PostDetailActivity.POST_ID_KEY, postId)
+                    }
+                )
+            }
+        })
     }
 
     private fun setupPosts() {

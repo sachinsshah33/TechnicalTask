@@ -1,37 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:orientation="vertical"
-    android:paddingLeft="8dp"
-    android:paddingTop="8dp"
-    android:gravity="center_vertical"
-    android:paddingRight="8dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:maxLines="1"
-        android:textSize="23dp"
-        android:textStyle="bold"
-        tools:text="title title title title title title title title title"/>
+    <data>
 
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginTop="8dp"
-        android:maxLines="2"
-        tools:text="content content content content content content content"/>
+        <variable
+            name="model"
+            type="space.stanton.technicaltask.data.models.PostsResponse.Post" />
 
-    <View
+        <variable
+            name="clickListener"
+            type="space.stanton.technicaltask.ui.postList.adapter.PostSelectedListener" />
+    </data>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="20dp"
-        android:background="@color/grey" />
-</LinearLayout>
+        android:layout_height="120dp"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:gravity="center_vertical"
+        android:paddingRight="8dp"
+        android:onClick="@{() -> clickListener.postClicked(model.id)}">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:maxLines="1"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            tools:text="title title title title title title title title title"
+            app:setTitle="@{model.title}" />
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            tools:text="content content content content content content content"
+            app:setContent="@{model.body}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
+            android:background="@color/grey" />
+    </LinearLayout>
+
+
+</layout>
